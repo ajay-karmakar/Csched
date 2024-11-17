@@ -9,7 +9,7 @@ Educational Resource: With its intuitive interface and educational value, this s
 
 # Usage:
 Clone the repository to your local machine.
-Install the required dependencies listed in the README file.
+Install the required dependencies listed in the - **`requirements.txt`**
 Run the simulator script and interact with the GUI to explore different scheduling algorithms and their outcomes.
 
 # Contributing:
