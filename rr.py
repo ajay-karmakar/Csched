@@ -3,36 +3,49 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
+from kivy.uix.scrollview import ScrollView
+from kivy.uix.gridlayout import GridLayout
+from kivy.metrics import dp
 
 class RoundRobinApp(App):
     def build(self):
         self.process_input_widgets = []
 
-        # Create GUI layout
-        layout = BoxLayout(orientation='vertical', spacing=10)
+        # Create the main layout (vertical BoxLayout)
+        main_layout = BoxLayout(orientation='vertical', spacing=10, padding=dp(20), size_hint_y=None)
+        main_layout.bind(minimum_height=main_layout.setter('height'))
 
         # Add text input for number of processes
-        self.num_processes_input = TextInput(hint_text="Enter number of processes")
-        layout.add_widget(self.num_processes_input)
+        self.num_processes_input = TextInput(hint_text="Enter number of processes", size_hint=(1, None), height=dp(40), multiline=False)
+        main_layout.add_widget(self.num_processes_input)
 
         # Add text input for time quantum
-        self.time_quantum_input = TextInput(hint_text="Enter time quantum")
-        layout.add_widget(self.time_quantum_input)
+        self.time_quantum_input = TextInput(hint_text="Enter time quantum", size_hint=(1, None), height=dp(40), multiline=False)
+        main_layout.add_widget(self.time_quantum_input)
 
         # Add button to dynamically generate input fields based on the number of processes
-        generate_button = Button(text="Generate Input Fields", on_press=self.generate_input_fields)
-        layout.add_widget(generate_button)
+        generate_button = Button(text="Generate Input Fields", size_hint=(1, None), height=dp(40))
+        generate_button.bind(on_press=self.generate_input_fields)
+        main_layout.add_widget(generate_button)
 
         # Add button to trigger Round Robin calculation
-        calculate_button = Button(text="Calculate Round Robin")
+        calculate_button = Button(text="Calculate Round Robin", size_hint=(1, None), height=dp(40))
         calculate_button.bind(on_press=self.calculate_round_robin)
-        layout.add_widget(calculate_button)
+        main_layout.add_widget(calculate_button)
+
+        # Add a container for process input fields
+        self.process_inputs_container = GridLayout(cols=2, spacing=dp(10), size_hint_y=None)
+        self.process_inputs_container.bind(minimum_height=self.process_inputs_container.setter('height'))
+        main_layout.add_widget(self.process_inputs_container)
 
         # Add label to display output
-        self.output_label = Label(size_hint=(1, None), height=500)
-        layout.add_widget(self.output_label)
+        self.output_label = Label(size_hint=(1, None), height=dp(500), text_size=(None, None))
+        main_layout.add_widget(self.output_label)
 
-        return layout
+        # Wrap the main layout in a ScrollView
+        scroll = ScrollView(size_hint=(1, 1))
+        scroll.add_widget(main_layout)
+        return scroll
 
     def generate_input_fields(self, instance):
         try:
@@ -45,23 +58,15 @@ class RoundRobinApp(App):
 
         # Clear previous input fields
         self.process_input_widgets.clear()
+        self.process_inputs_container.clear_widgets()
 
         # Generate input fields based on the number of processes
         for i in range(num_processes):
-            process_label = Label(text=f"Process {i + 1}:")
-            process_input = TextInput(hint_text=f"Enter arrival time and burst time for process {i + 1}")
+            process_label = Label(text=f"Process {i + 1}:", size_hint_y=None, height=dp(40))
+            process_input = TextInput(hint_text=f"Enter arrival time and burst time for process {i + 1}", size_hint_y=None, height=dp(40), multiline=False)
+            self.process_inputs_container.add_widget(process_label)
+            self.process_inputs_container.add_widget(process_input)
             self.process_input_widgets.extend([process_label, process_input])
-
-        # Update layout
-        layout = self.root
-        layout.clear_widgets()
-        layout.add_widget(self.num_processes_input)
-        layout.add_widget(self.time_quantum_input)
-        layout.add_widget(Button(text="Generate Input Fields", on_press=self.generate_input_fields))
-        for widget in self.process_input_widgets:
-            layout.add_widget(widget)
-        layout.add_widget(Button(text="Calculate Round Robin", on_press=self.calculate_round_robin))
-        layout.add_widget(self.output_label)
 
     def calculate_round_robin(self, instance):
         try:
@@ -107,14 +112,14 @@ class RoundRobinApp(App):
                         turnaround_times[i] = current_time - processes[i][1]
                         remaining_burst_time[i] = 0
                         executed_processes.append(processes[i][0])
-
                         for j in range(num_processes):
                             if j != i and remaining_burst_time[j] > 0:
                                 waiting_times[j] += current_time - processes[j][1]
-
             if all_processes_done:
                 break
 
+        # Calculate waiting times using Waiting Time = Turnaround Time - Burst Time
+        waiting_times = [turnaround_times[i] - processes[i][2] for i in range(num_processes)]
         # Calculate average turnaround time and average waiting time
         avg_turnaround_time = sum(turnaround_times) / num_processes
         avg_waiting_time = sum(waiting_times) / num_processes

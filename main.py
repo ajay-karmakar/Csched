@@ -5,6 +5,8 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.config import Config
+from kivy.uix.scrollview import ScrollView
+from kivy.metrics import dp
 import os
 
 # Set Kivy window size
@@ -13,8 +15,9 @@ Config.set('graphics', 'height', '600')
 
 class Algorithm_SelectorApp(App):
     def build(self):
-        # Create GUI layout
-        layout = BoxLayout(orientation='vertical', spacing=10)
+        # Create main layout with padding and spacing
+        main_layout = BoxLayout(orientation='vertical', spacing=dp(20), padding=dp(20), size_hint_y=None)
+        main_layout.bind(minimum_height=main_layout.setter('height'))
 
         # Create dropdown menu
         dropdown = DropDown()
@@ -22,23 +25,26 @@ class Algorithm_SelectorApp(App):
         # Add options to the dropdown menu
         options = ["FCFS", "RR", "PS", "SJF"]
         for option in options:
-            btn = Button(text=option, size_hint_y=None, height=44)
+            btn = Button(text=option, size_hint_y=None, height=dp(44), size_hint_x=1)
             btn.bind(on_release=lambda btn: dropdown.select(btn.text))
             dropdown.add_widget(btn)
 
-        # Create main button to display dropdown
-        main_button = Button(text='Select Algorithm', size_hint=(None, None), width=200, height=50)
+        # Create main button to display dropdown, centered
+        main_button = Button(text='Select Algorithm', size_hint=(None, None), width=dp(200), height=dp(50), pos_hint={'center_x': 0.5})
         main_button.bind(on_release=dropdown.open)
         dropdown.bind(on_select=self.on_select)
 
         # Add main button to layout
-        layout.add_widget(main_button)
+        main_layout.add_widget(main_button)
 
         # Add label to display output
-        self.output_label = Label(size_hint=(1, None), height=500)
-        layout.add_widget(self.output_label)
+        self.output_label = Label(size_hint=(1, None), height=dp(500), text_size=(None, None))
+        main_layout.add_widget(self.output_label)
 
-        return layout
+        # Wrap the main layout in a ScrollView
+        scroll = ScrollView(size_hint=(1, 1))
+        scroll.add_widget(main_layout)
+        return scroll
 
     def on_select(self, instance, value):
         # Execute the selected algorithm code

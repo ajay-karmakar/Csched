@@ -1,25 +1,42 @@
 # Csched
-This repository hosts CSCHED, a CPU Scheduling Algorithm Simulator, a comprehensive tool designed to simulate various CPU scheduling algorithms with an interactive GUI built using the Kivy framework in Python.
+This repository hosts CSCHED, a CPU Scheduling Algorithm Simulator—a comprehensive tool designed to simulate various CPU scheduling algorithms with a modern, interactive GUI built using the Kivy framework in Python.
 
 # Features:
-Multiple Algorithms: The simulator supports popular CPU scheduling algorithms including FCFS, PS, RR, and SJF, allowing users to explore and compare their performance.
-Dynamic Input: Users can input process details and scheduling constraints on-the-fly, enabling customization and adaptability to different scenarios.
-Real-time Output: The simulator provides real-time output showcasing scheduling sequences, turnaround time, waiting time, and other metrics, facilitating easy analysis of algorithm performance.
-Educational Resource: With its intuitive interface and educational value, this simulator is ideal for students, instructors, and professionals seeking to understand CPU scheduling algorithms.
+- **Multiple Algorithms:** The simulator supports popular CPU scheduling algorithms including FCFS, PS, RR, and SJF, allowing users to explore and compare their performance.
+- **Real-time Output:** The simulator provides real-time output showcasing scheduling sequences, turnaround time, waiting time, and other metrics, facilitating easy analysis of algorithm performance.
+- **Educational Resource:** With its intuitive interface and educational value, this simulator is ideal for students, instructors, and professionals seeking to understand CPU scheduling algorithms.
 
-# Usage:
-Clone the repository to your local machine.
-Install the required dependencies listed in the **`requirements.txt`**.
-Run the simulator script and interact with the GUI to explore different scheduling algorithms and their outcomes.
+# Prerequisites
+
+- Python 3.8 or higher
+- pip (Python package installer)
+
+# Installation
+
+1. Clone the repository or download the project files:
+
+    ```sh
+    git clone https://github.com/ajay-karmakar/Csched.git
+    cd csched
+    ```
+
+2. Install the required dependencies:
+
+    ```sh
+    pip install -r requirements.txt
+    ```
+
+# Usage
+
+1. Run the simulator using the following command:
+
+    ```sh
+    python main.py
+    ```
+
+2. Use the dropdown menu in the GUI to select and launch any CPU scheduling algorithm module. Enter process details as prompted and view the results in real time.
 
 # Contributing:
 Contributions to this project are welcome! Whether it's fixing bugs, adding features, or improving documentation, feel free to fork the repository and submit pull requests.
 
-# License:
-This project is licensed under the MIT License, granting you the freedom to modify and distribute the code for both personal and commercial use.
 
-# Acknowledgments:
-We would like to express our gratitude to the Kivy development team for providing an excellent framework for building cross-platform applications in Python.
-
-# Get Started:
-Explore the capabilities of CPU scheduling algorithms and enhance your understanding of operating systems with our CPU Scheduling Simulator. Clone the repository and start simulating today!
