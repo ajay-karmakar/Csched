@@ -17,7 +17,7 @@ This repository hosts CSCHED, a CPU Scheduling Algorithm Simulator—a comprehen
 
     ```sh
     git clone https://github.com/ajay-karmakar/Csched.git
-    cd csched
+    cd Csched
     ```
 
 2. Install the required dependencies:
